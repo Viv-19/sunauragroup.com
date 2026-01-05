@@ -1,24 +1,28 @@
 export default function Projects({ projects }) {
-    return (
-      <section id="projects" className="section-padding bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">Successful Projects</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Our completed installations across various sectors</p>
-          </div>
-  
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {projects.map((project) => (
+  // Duplicate projects array for seamless infinite scroll
+  const duplicatedProjects = [...projects, ...projects];
+
+  return (
+    <section id="projects" className="section-padding bg-white">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">Successful Projects</h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">Our completed installations across various sectors</p>
+        </div>
+
+        <div className="scroll-container">
+          <div className="scroll-content">
+            {duplicatedProjects.map((project, index) => (
               <div
-                key={project.id}
-                className="bg-gradient-to-br from-gray-50 to-red-50 rounded-2xl overflow-hidden shadow-lg hover-lift"
-                data-testid={`project-card-${project.id}`}
+                key={`${project.id}-${index}`}
+                className="premium-card hover-lift flex-shrink-0 w-[500px]"
+                data-testid={index < projects.length ? `project-card-${project.id}` : undefined}
               >
                 <div className="h-80 overflow-hidden">
                   <img
                     src={project.images[0]}
                     alt={project.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                   />
                 </div>
                 <div className="p-8">
@@ -29,7 +33,8 @@ export default function Projects({ projects }) {
             ))}
           </div>
         </div>
-      </section>
-    );
-  }
-  
+      </div>
+    </section>
+  );
+}
+

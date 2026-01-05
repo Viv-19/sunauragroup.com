@@ -49,25 +49,25 @@ export default function Contact({ settings }) {
           <div className="space-y-8">
             <div className="bg-white p-8 rounded-2xl shadow-lg">
               <h3 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h3>
-              
+
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
                   <div className="bg-red-100 p-3 rounded-full">
                     <Phone className="w-6 h-6 text-red-600" />
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900 mb-1">Phone</p>
-                    <p className="text-gray-700">{settings?.phone || "+91-1234567890"}</p>
+                    <p className="font-semibold text-gray-900 mb-1">Phone / WhatsApp</p>
+                    <p className="text-gray-700">{settings?.phone || "+91-9204418515"}</p>
                     <p className="text-sm text-gray-500 mt-1">Order product by calling this number</p>
                     <a
-                      href={whatsappUrl}
+                      href={settings?.whatsapp_number ? `https://wa.me/${settings.whatsapp_number}` : "https://wa.me/919204418515"}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center space-x-2 mt-2 text-green-600 hover:text-green-700 font-medium"
                       data-testid="whatsapp-link"
                     >
                       <MessageSquare className="w-4 h-4" />
-                      <span>WhatsApp</span>
+                      <span>WhatsApp: +91-9204418515</span>
                     </a>
                   </div>
                 </div>
@@ -78,7 +78,7 @@ export default function Contact({ settings }) {
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900 mb-1">Email</p>
-                    <p className="text-gray-700">{settings?.email || "contact@sunaura.com"}</p>
+                    <p className="text-gray-700">{settings?.email || "sunauratech@gmail.com"}</p>
                   </div>
                 </div>
 
@@ -88,23 +88,12 @@ export default function Contact({ settings }) {
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900 mb-1">Office Address</p>
-                    <p className="text-gray-700">{settings?.address || "Bokaro, Jharkhand, India"}</p>
+                    <p className="text-gray-700">{settings?.address || "8th Lane, Sarweshwari Nagar, Bajra, Itki Road, Ranchi"}</p>
+                    <p className="text-sm text-gray-500 mt-2">State: Jharkhand, Code: 20</p>
+                    <p className="text-sm text-gray-500 mt-1">GSTIN/UIN: 20DZZPS7438M1ZB</p>
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* Map */}
-            <div className="bg-white p-4 rounded-2xl shadow-lg overflow-hidden" style={{ height: "400px" }}>
-              <iframe
-                src={settings?.map_embed_url || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.9080207897634!2d86.15116!3d23.78954!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDQ3JzIyLjMiTiA4NsKwMDknMDQuMiJF!5e0!3m2!1sen!2sin!4v1234567890"}
-                width="100%"
-                height="100%"
-                style={{ border: 0, borderRadius: "12px" }}
-                allowFullScreen=""
-                loading="lazy"
-                title="Office Location"
-              ></iframe>
             </div>
           </div>
 

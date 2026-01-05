@@ -16,15 +16,20 @@ export default function Navbar() {
     <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-md shadow-sm z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          <div className="flex items-center">
+          <div className="flex items-center gap-4">
+            <img
+              src="/assets/sunaura logo.jpeg"
+              alt="SunAura Logo"
+              className="h-16 w-16 rounded-lg shadow-sm object-contain"
+            />
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">SunAura</h1>
+              <h1 className="text-2xl font-bold text-gray-900">SunAura</h1>
               <p className="text-xs text-red-600 font-medium">Authorized Distributor of Racold</p>
             </div>
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex items-center space-x-8">
             <button onClick={() => scrollToSection('home')} className="text-gray-700 hover:text-red-600 font-medium transition-colors">
               Home
             </button>
@@ -37,6 +42,13 @@ export default function Navbar() {
             <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-red-600 font-medium transition-colors">
               Contact
             </button>
+            <a
+              href="/admin/login"
+              className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 transition-colors shadow-md border-2 border-red-700"
+              title="Only for Admin"
+            >
+              Admin Login
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -66,6 +78,13 @@ export default function Navbar() {
             <button onClick={() => scrollToSection('contact')} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors">
               Contact
             </button>
+            <a
+              href="/admin/login"
+              className="block w-full text-center px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors shadow-md border-2 border-red-700"
+              title="Only for Admin"
+            >
+              Admin Login
+            </a>
           </div>
         </div>
       )}
