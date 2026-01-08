@@ -4,32 +4,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import axios from "axios";
-
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
 
 export default function Contact({ settings }) {
   const [formData, setFormData] = useState({ name: "", phone: "", message: "" });
-  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.name || !formData.phone || !formData.message) {
       toast.error("Please fill all fields");
       return;
     }
 
-    setLoading(true);
-    try {
-      await axios.post(`${API}/contact`, formData);
-      toast.success("Message sent successfully! We'll contact you soon.");
-      setFormData({ name: "", phone: "", message: "" });
-    } catch (error) {
-      toast.error("Failed to send message. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+    const whatsappNumber = settings?.whatsapp_number || "9204418515";
+    const text = `*New Inquiry from SunAura Website*%0A%0A*Name:* ${formData.name}%0A*Phone:* ${formData.phone}%0A*Message:* ${formData.message}`;
+    const whatsappUrl = `https://wa.me/91${whatsappNumber}?text=${text}`;
+
+    window.open(whatsappUrl, "_blank");
+    toast.success("Redirecting to WhatsApp...");
+    setFormData({ name: "", phone: "", message: "" });
   };
 
 
@@ -133,11 +125,10 @@ export default function Contact({ settings }) {
               </div>
               <Button
                 type="submit"
-                disabled={loading}
                 className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-6 rounded-full"
                 data-testid="contact-form-submit"
               >
-                {loading ? "Sending..." : "Send Message"}
+                Send Message
               </Button>
             </form>
           </div>
