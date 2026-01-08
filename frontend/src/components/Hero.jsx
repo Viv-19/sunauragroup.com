@@ -22,7 +22,7 @@ export default function Hero() {
       setCurrentImageIndex((prevIndex) =>
         (prevIndex + 1) % backgroundImages.length
       );
-    }, 2000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, []);

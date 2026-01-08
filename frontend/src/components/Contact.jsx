@@ -32,9 +32,6 @@ export default function Contact({ settings }) {
     }
   };
 
-  const whatsappUrl = settings?.whatsapp_number
-    ? `https://wa.me/${settings.whatsapp_number}`
-    : "#";
 
   return (
     <section id="contact" className="section-padding bg-gray-50">
@@ -60,14 +57,14 @@ export default function Contact({ settings }) {
                     <p className="text-gray-700">{settings?.phone || "+91-9204418515"}</p>
                     <p className="text-sm text-gray-500 mt-1">Order product by calling this number</p>
                     <a
-                      href={settings?.whatsapp_number ? `https://wa.me/${settings.whatsapp_number}` : "https://wa.me/919204418515"}
+                      href={settings?.whatsapp_number ? `https://wa.me/91${settings.whatsapp_number}` : "https://wa.me/919204418515"}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center space-x-2 mt-2 text-green-600 hover:text-green-700 font-medium"
                       data-testid="whatsapp-link"
                     >
                       <MessageSquare className="w-4 h-4" />
-                      <span>WhatsApp: +91-9204418515</span>
+                      <span>WhatsApp: +91-{settings?.whatsapp_number || "9204418515"}</span>
                     </a>
                   </div>
                 </div>
@@ -78,7 +75,7 @@ export default function Contact({ settings }) {
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900 mb-1">Email</p>
-                    <p className="text-gray-700">{settings?.email || "sunauratech@gmail.com"}</p>
+                    <p className="text-gray-700">{settings?.email || "sunauratec@gmail.com"}</p>
                   </div>
                 </div>
 

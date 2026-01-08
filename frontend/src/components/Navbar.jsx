@@ -42,13 +42,6 @@ export default function Navbar() {
             <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-red-600 font-medium transition-colors">
               Contact
             </button>
-            <a
-              href="/admin/login"
-              className="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 transition-colors shadow-md border-2 border-red-700"
-              title="Only for Admin"
-            >
-              Admin Login
-            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -78,13 +71,6 @@ export default function Navbar() {
             <button onClick={() => scrollToSection('contact')} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors">
               Contact
             </button>
-            <a
-              href="/admin/login"
-              className="block w-full text-center px-4 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors shadow-md border-2 border-red-700"
-              title="Only for Admin"
-            >
-              Admin Login
-            </a>
           </div>
         </div>
       )}
