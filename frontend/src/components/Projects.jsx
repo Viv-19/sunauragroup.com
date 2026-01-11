@@ -20,6 +20,7 @@ function ProjectImageSlider({ images, title }) {
           key={index}
           src={image}
           alt={`${title} - ${index + 1}`}
+          loading="lazy"
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${index === currentIndex ? "opacity-100" : "opacity-0"
             }`}
         />

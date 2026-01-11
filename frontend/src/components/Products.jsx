@@ -1,4 +1,4 @@
-import { ExternalLink, CheckCircle, ArrowRight } from "lucide-react";
+import { CheckCircle, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Products({ categories }) {
@@ -27,7 +27,8 @@ export default function Products({ categories }) {
                   <img
                     src={category.image_url}
                     alt={category.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
                 </div>

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Home from "@/pages/Home";
 import CategoryProducts from "@/pages/CategoryProducts";
+import ScrollToTop from "./components/ScrollToTop";
 import { Toaster } from "@/components/ui/sonner";
 import "@/App.css";
 
@@ -8,6 +9,7 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/category/:categoryId" element={<CategoryProducts />} />

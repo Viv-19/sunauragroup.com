@@ -33,13 +33,14 @@ export default function Hero() {
       {backgroundImages.map((image, index) => (
         <div
           key={index}
-          className={`bg-transition ${index === currentImageIndex ? 'active' : 'inactive'
-            }`}
+          className={`bg-transition ${index === currentImageIndex ? 'active' : 'inactive'}`}
           style={{
             backgroundImage: `url('${image}')`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
+          role="img"
+          aria-label={`SunAura Solar and Heat Pump Solutions - Slide ${index + 1}`}
         >
           <div className="absolute inset-0 bg-gradient-to-br from-gray-900/90 via-gray-900/80 to-red-900/70"></div>
         </div>
