@@ -1,16 +1,9 @@
 import { Droplet, Zap, Award, Flame } from "lucide-react";
 import { useState, useEffect } from "react";
-
-// Background images array - using public folder paths
-const backgroundImages = [
-  "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=1600", // Existing Unsplash image
-  "/assets/background baby racold.jpeg",
-  "/assets/background children racold.png",
-  "/assets/background elder racold.jpeg",
-  "/assets/background young racold.png"
-];
+import { websiteConfig } from "@/data/website-config";
 
 export default function Hero() {
+  const { hero_images } = websiteConfig.settings;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -20,17 +13,17 @@ export default function Hero() {
     // Rotate background images every 2 seconds
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) =>
-        (prevIndex + 1) % backgroundImages.length
+        (prevIndex + 1) % hero_images.length
       );
     }, 4000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [hero_images.length]);
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Multiple Background Images with Fade Transition */}
-      {backgroundImages.map((image, index) => (
+      {hero_images.map((image, index) => (
         <div
           key={index}
           className={`bg-transition ${index === currentImageIndex ? 'active' : 'inactive'}`}

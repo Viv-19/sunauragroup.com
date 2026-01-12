@@ -1,16 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      setIsOpen(false);
+    if (location.pathname !== '/') {
+      navigate('/', { state: { scrollTo: id } });
+    } else {
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
     }
+    setIsOpen(false);
   };
+
+  useEffect(() => {
+    if (location.pathname === '/' && location.state?.scrollTo) {
+      const id = location.state.scrollTo;
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+          // Clear state to avoid scrolling on refresh
+          window.history.replaceState({}, document.title);
+        }
+      }, 100);
+    }
+  }, [location]);
+
+  const navLinks = [
+    { name: 'Home', id: 'home' },
+    { name: 'Products', id: 'products' },
+    { name: 'Projects', id: 'projects' },
+    { name: 'Contact', id: 'contact' }
+  ];
 
   return (
     <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-md shadow-sm z-50">
@@ -30,18 +58,15 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <button onClick={() => scrollToSection('home')} className="text-gray-700 hover:text-red-600 font-medium transition-colors">
-              Home
-            </button>
-            <button onClick={() => scrollToSection('products')} className="text-gray-700 hover:text-red-600 font-medium transition-colors">
-              Products
-            </button>
-            <button onClick={() => scrollToSection('projects')} className="text-gray-700 hover:text-red-600 font-medium transition-colors">
-              Projects
-            </button>
-            <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-red-600 font-medium transition-colors">
-              Contact
-            </button>
+            {navLinks.map((link) => (
+              <button
+                key={link.id}
+                onClick={() => scrollToSection(link.id)}
+                className="text-gray-700 hover:text-red-600 font-medium transition-colors"
+              >
+                {link.name}
+              </button>
+            ))}
           </div>
 
           {/* Mobile Menu Button */}
@@ -59,18 +84,15 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-white border-t" data-testid="mobile-menu">
           <div className="px-4 py-4 space-y-3">
-            <button onClick={() => scrollToSection('home')} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors">
-              Home
-            </button>
-            <button onClick={() => scrollToSection('products')} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors">
-              Products
-            </button>
-            <button onClick={() => scrollToSection('projects')} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors">
-              Projects
-            </button>
-            <button onClick={() => scrollToSection('contact')} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors">
-              Contact
-            </button>
+            {navLinks.map((link) => (
+              <button
+                key={link.id}
+                onClick={() => scrollToSection(link.id)}
+                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors"
+              >
+                {link.name}
+              </button>
+            ))}
           </div>
         </div>
       )}

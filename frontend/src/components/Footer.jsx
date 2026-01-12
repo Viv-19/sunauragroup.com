@@ -21,15 +21,19 @@ export default function Footer({ settings }) {
           <div>
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <div className="space-y-2">
-              <button onClick={() => document.getElementById('products').scrollIntoView({ behavior: 'smooth' })} className="block text-gray-400 hover:text-white text-sm transition-colors">
-                Products
-              </button>
-              <button onClick={() => document.getElementById('projects').scrollIntoView({ behavior: 'smooth' })} className="block text-gray-400 hover:text-white text-sm transition-colors">
-                Projects
-              </button>
-              <button onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })} className="block text-gray-400 hover:text-white text-sm transition-colors">
-                Contact
-              </button>
+              {[
+                { name: 'Products', id: 'products' },
+                { name: 'Projects', id: 'projects' },
+                { name: 'Contact', id: 'contact' }
+              ].map((link) => (
+                <button
+                  key={link.id}
+                  onClick={() => document.getElementById(link.id).scrollIntoView({ behavior: 'smooth' })}
+                  className="block text-gray-400 hover:text-white text-sm transition-colors text-left"
+                >
+                  {link.name}
+                </button>
+              ))}
               <a href="/admin/login" className="block text-gray-400 hover:text-white text-sm transition-colors">
                 Admin Login
               </a>

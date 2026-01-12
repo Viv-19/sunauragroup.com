@@ -8,13 +8,20 @@ export const websiteConfig = {
         map_embed_url: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3663.156557833075!2d85.2589255!3d23.3463334!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f4e09545d1d603%3A0xc3f837651a134a9e!2sSunAura!5e0!3m2!1sen!2sin!4v1704400000000!5m2!1sen!2sin",
         gstin: "20DZZPS7438M1ZB",
         state: "Jharkhand",
-        state_code: "20"
+        state_code: "20",
+        hero_images: [
+            "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=1600",
+            "/assets/background baby racold.jpeg",
+            "/assets/background children racold.png",
+            "/assets/background elder racold.jpeg",
+            "/assets/background young racold.png"
+        ]
     },
     categories: [
         {
             id: "storage-geyser",
             name: "Storage Geyser",
-            image_url: "/assets/product category/Storage Geyser.jpeg",
+            image_url: "/assets/product category/Storage Geyser/Category.jpeg",
             features: [
                 "Titanium Plus Technology",
                 "Safety Plus",
@@ -82,7 +89,7 @@ export const websiteConfig = {
         {
             id: "tankless-geyser",
             name: "Tankless Geyser",
-            image_url: "/assets/product category/Tankless Geyser.jpeg",
+            image_url: "/assets/product category/Tankless Geyser/Category.jpeg",
             features: [
                 "Multipoint Usage",
                 "Continuous Hot Water",
@@ -115,7 +122,7 @@ export const websiteConfig = {
         {
             id: "domestic-heatpump",
             name: "Domestic Heatpump",
-            image_url: "/assets/product category/Domestic Heat Pump.jpeg",
+            image_url: "/assets/product category/Domestic Heatpump/Domestic Heat Pump 200l , 300l , 500l.jpeg",
             features: [
                 "70% Energy Saving",
                 "Suitable for 10 to 30 Bathroom",
@@ -134,7 +141,7 @@ export const websiteConfig = {
         {
             id: "commercial-heatpump",
             name: "Commercial Heatpump",
-            image_url: "/assets/product category/Commercial Heatpump.jpeg",
+            image_url: "/assets/product category/Commercial Heatpump/commercial heatpump 12kw and 23kw.jpeg",
             features: [
                 "70% Energy Saving",
                 "Available in 12kW, 23kW, 48kW",
@@ -159,7 +166,7 @@ export const websiteConfig = {
         {
             id: "solar-water-heater",
             name: "Solar Water Heater",
-            image_url: "/assets/product category/Solar Water Heater.jpeg",
+            image_url: "/assets/product category/Solar water Heater/Solar water Heater Alpha plus.jpeg",
             features: [
                 "Rust Proof Body",
                 "Magnesium Anode",
@@ -182,7 +189,6 @@ export const websiteConfig = {
             ]
         }
     ],
-    products: [],
     projects: [
         {
             id: "project-1",
