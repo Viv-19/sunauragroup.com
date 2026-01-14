@@ -55,11 +55,20 @@ Amplify should auto-detect your React app. Ensure the settings look like this:
   ```
 7. Click **Next** -> **Save and Deploy**.
 
-### 4. Custom Domain & SSL
+### 4. Custom Domain & SSL (Spaceship)
 1. Once deployed, go to **Domain management** in the Amplify sidebar.
-2. Click **Add domain** and enter your domain (e.g., `sunauragroup.com`).
-3. AWS will automatically provision a **Free SSL Certificate** (the lock icon in Chrome).
-4. Follow the instructions to update your DNS records at your domain registrar.
+2. Click **Add domain**.
+3. Type your domain name (e.g., `sunauragroup.com`) and click **Configure domain**.
+4. AWS will provide a list of DNS records (CNAME, ANAME, or TXT for verification). **Keep this tab open.**
+5. Go to your **Spaceship Account**:
+   - Navigate to the **"Domain Manager"**.
+   - Select your domain and go to **"DNS Settings"**.
+   - Switch to the **"Advanced DNS"** or **"Custom DNS"** tab if necessary.
+6. **Add the Records**:
+   - **Verification**: If AWS asks for a TXT record, add it in Spaceship with the provided Host (`_amplify...`) and Value.
+   - **Root Domain**: Add an **ALIAS** or **ANAME** record for the root (`@`) pointing to the Amplify address provided.
+   - **WWW Subdomain**: Add a **CNAME** record for `www` pointing to the same Amplify address.
+7. **Wait**: It can take 30 minutes to 24 hours for DNS to propagate. AWS will automatically handle the **Free SSL Certificate** (the lock icon in Chrome) once records are verified.
 
 ---
 
