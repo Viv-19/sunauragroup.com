@@ -1,18 +1,25 @@
-import { Droplet, Zap, Award, Flame, ArrowRight, MessageSquare, ShieldCheck } from "lucide-react";
+import { Sparkles, ArrowRight, MessageSquare, ShieldCheck, Heart, Crown, Gem } from "lucide-react";
 import { useState, useEffect } from "react";
-import { websiteConfig } from "@/data/website-config";
+import { sareeConfig } from "@/data/saree-config";
 
-export default function Hero() {
-  const { hero_images } = websiteConfig;
+export default function SareeHero() {
+  const { settings } = sareeConfig;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [headlineIndex, setHeadlineIndex] = useState(0);
   const [textFade, setTextFade] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  const images = settings.hero_images || [
+    "/assets/sarees/saree-hero-1.jpeg",
+    "/assets/sarees/saree-hero-2.jpeg",
+    "/assets/sarees/saree-hero-3.jpeg",
+    "/assets/sarees/saree-hero-4.jpeg",
+  ];
+
   useEffect(() => {
     setIsLoaded(true);
 
-    const imagesToRotate = hero_images || websiteConfig.settings.hero_images;
+    const imagesToRotate = settings.hero_images;
     if (imagesToRotate && imagesToRotate.length > 1) {
       const imageInterval = setInterval(() => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imagesToRotate.length);
@@ -20,9 +27,9 @@ export default function Hero() {
 
       return () => clearInterval(imageInterval);
     }
-  }, [hero_images]);
+  }, [settings.hero_images]);
 
-  // 2-Second Headline Rotating Switcher
+  // 2-Second Rotating Headline Switcher
   useEffect(() => {
     const headlineInterval = setInterval(() => {
       setTextFade(false);
@@ -35,11 +42,9 @@ export default function Hero() {
     return () => clearInterval(headlineInterval);
   }, []);
 
-  const images = hero_images || websiteConfig.settings.hero_images;
-
   return (
     <section id="home" className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-16">
-      {/* Background Slides */}
+      {/* Background Slides with full uncropped background cover */}
       {images.map((image, index) => (
         <div
           key={index}
@@ -50,7 +55,7 @@ export default function Hero() {
             backgroundPosition: "center",
           }}
           role="img"
-          aria-label={`SunAura Slide ${index + 1}`}
+          aria-label={`Surat Saree Slide ${index + 1}`}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-900/80 to-slate-950/95" />
         </div>
@@ -61,9 +66,9 @@ export default function Hero() {
         <div className="space-y-6">
           {/* Badge */}
           <div className={`${isLoaded ? 'slide-down' : 'opacity-0'}`}>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-red-600/20 text-red-400 border border-red-500/30 text-xs font-bold tracking-wide backdrop-blur-md">
-              <Award className="w-3.5 h-3.5 text-red-400" />
-              <span>Authorized Racold Distributor • Ranchi, Jharkhand</span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-rose-600/20 text-rose-300 border border-rose-500/30 text-xs font-bold tracking-wide backdrop-blur-md">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
+              <span>Direct from Surat Mills • Ranchi, Jharkhand</span>
             </div>
           </div>
 
@@ -76,14 +81,14 @@ export default function Hero() {
             >
               {headlineIndex === 0 ? (
                 <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-tight">
-                  Smarter Water Heating <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-400 to-amber-400">
-                    For Every Home & Project
+                  Authentic Surat Sarees <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-pink-300 to-amber-300">
+                    At Direct Mill Rates
                   </span>
                 </h1>
               ) : (
-                <h1 className="text-6xl sm:text-8xl lg:text-9xl font-black tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-red-100 to-amber-300 drop-shadow-2xl">
-                  SunAura
+                <h1 className="text-6xl sm:text-8xl lg:text-9xl font-black tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-rose-200 via-pink-400 to-amber-300 drop-shadow-2xl">
+                  Surat Saree Factory
                 </h1>
               )}
             </div>
@@ -91,44 +96,44 @@ export default function Hero() {
 
           {/* Short, Punchy Subtitle */}
           <p className={`text-base sm:text-lg text-slate-300 max-w-2xl mx-auto font-normal ${isLoaded ? 'slide-up stagger-1' : 'opacity-0'}`}>
-            Genuine Racold Storage Geysers, Instant Heaters, Central Heat Pumps & Solar Systems with same-day Ranchi delivery.
+            Banarasi Katan, Kanjivaram Silk, Flowy Georgette & Bridal Zari with doorstep fabric inspection and same-day delivery in Ranchi.
           </p>
 
           {/* Clean Feature Badges */}
           <div className={`flex flex-wrap justify-center gap-2 sm:gap-3 pt-2 ${isLoaded ? 'slide-up stagger-2' : 'opacity-0'}`}>
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-medium">
-              <Flame className="w-3.5 h-3.5 text-red-400" /> Storage (10L-100L)
+              <Crown className="w-3.5 h-3.5 text-amber-400" /> Banarasi & Kanjivaram
             </span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-medium">
-              <Zap className="w-3.5 h-3.5 text-amber-400" /> Instant Tankless
+              <Gem className="w-3.5 h-3.5 text-rose-400" /> Surat Georgette
             </span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-medium">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-400" /> Heat Pumps (70% Saver)
+              <Heart className="w-3.5 h-3.5 text-pink-400" /> Pure Cotton & Linen
             </span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 text-white text-xs font-medium">
-              <Droplet className="w-3.5 h-3.5 text-emerald-400" /> Solar Heating
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Check at Doorstep (COD)
             </span>
           </div>
 
           {/* Action CTAs */}
           <div className={`flex flex-wrap items-center justify-center gap-3 pt-4 ${isLoaded ? 'scale-in stagger-3' : 'opacity-0'}`}>
             <button
-              onClick={() => document.getElementById('products').scrollIntoView({ behavior: 'smooth' })}
-              className="px-6 py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-600/30 transition-all flex items-center gap-2 text-sm hover:-translate-y-0.5"
+              onClick={() => document.getElementById('saree-catalog')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-6 py-3.5 bg-gradient-to-r from-rose-600 via-pink-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-bold rounded-xl shadow-lg shadow-rose-600/30 transition-all flex items-center gap-2 text-sm hover:-translate-y-0.5"
             >
-              <span>Explore Products</span>
+              <span>Explore Saree Collection</span>
               <ArrowRight className="w-4 h-4" />
             </button>
 
             <button
-              onClick={() => document.getElementById('sizing-calculator').scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.getElementById('saree-catalog')?.scrollIntoView({ behavior: 'smooth' })}
               className="px-5 py-3.5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl backdrop-blur-md border border-white/20 transition-all text-sm hover:-translate-y-0.5"
             >
-              Capacity Calculator
+              Fabric Catalogue
             </button>
 
             <a
-              href={`https://wa.me/${websiteConfig.settings.whatsapp_number}?text=${encodeURIComponent('Hello SunAura! I would like to inquire about Racold water heaters.')}`}
+              href={`https://wa.me/${settings.whatsapp_number}?text=${encodeURIComponent('Hello Surat Saree Factory! I would like to see the latest saree collection with delivery in Ranchi.')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md shadow-emerald-600/30 transition-all flex items-center gap-2 text-sm hover:-translate-y-0.5"

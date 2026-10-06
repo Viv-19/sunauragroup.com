@@ -1,0 +1,83 @@
+import { ShieldCheck, Truck, Wrench, Headphones, Award } from "lucide-react";
+
+export default function TrustBadges() {
+  const guarantees = [
+    {
+      icon: ShieldCheck,
+      title: "100% Genuine Racold",
+      desc: "Authorized distributor with official serial warranty & genuine spares.",
+      badge: "Official Dealer",
+      color: "text-emerald-600 bg-emerald-50 border-emerald-200",
+    },
+    {
+      icon: Truck,
+      title: "Same-Day Delivery",
+      desc: "Doorstep dispatch across Ranchi from our Bajra store; Jharkhand shipping.",
+      badge: "Fast Shipping",
+      color: "text-red-600 bg-red-50 border-red-200",
+    },
+    {
+      icon: Wrench,
+      title: "Expert Installation",
+      desc: "Certified technicians for geyser mounting, piping & solar setup.",
+      badge: "On-Site Techs",
+      color: "text-amber-600 bg-amber-50 border-amber-200",
+    },
+    {
+      icon: Headphones,
+      title: "Direct Store Support",
+      desc: "Instant WhatsApp & phone support from our local Ranchi team.",
+      badge: "Direct Help",
+      color: "text-blue-600 bg-blue-50 border-blue-200",
+    },
+  ];
+
+  return (
+    <section className="py-14 bg-white border-y border-gray-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-800 text-xs font-bold uppercase tracking-wider mb-2">
+            <Award className="w-3.5 h-3.5 text-red-600" />
+            <span>Why Choose SunAura</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+            Authorized Reliability in Ranchi
+          </h2>
+        </div>
+
+        {/* 4 Trust Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {guarantees.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={index}
+                className="bg-slate-50/70 rounded-2xl p-5 border border-gray-200/80 hover:bg-white hover:border-gray-300 hover:shadow-lg transition-all duration-200 flex flex-col justify-between group"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3.5">
+                    <div className={`p-2.5 rounded-xl border ${item.color}`}>
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider bg-white px-2 py-0.5 rounded-full border border-gray-200">
+                      {item.badge}
+                    </span>
+                  </div>
+
+                  <h3 className="text-base font-bold text-gray-900 mb-1">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
