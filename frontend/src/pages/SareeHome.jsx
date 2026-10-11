@@ -13,8 +13,8 @@ export default function SareeHome() {
     <div className="bg-slate-50 min-h-screen text-slate-900 selection:bg-rose-500 selection:text-white">
       <Navbar />
       <SareeHero />
-      <SareeTrustBadges />
       <SareeCatalog />
+      <SareeTrustBadges />
       <Contact settings={settings} />
       <Footer settings={settings} />
     </div>

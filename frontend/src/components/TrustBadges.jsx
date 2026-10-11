@@ -18,9 +18,9 @@ export default function TrustBadges() {
     },
     {
       icon: Wrench,
-      title: "Expert Installation",
-      desc: "Certified technicians for geyser mounting, piping & solar setup.",
-      badge: "On-Site Techs",
+      title: "Free Installation & Pipes",
+      desc: "Free standard installation and connecting pipes included (on all models except Pronto Neo).",
+      badge: "Free Perk",
       color: "text-amber-600 bg-amber-50 border-amber-200",
     },
     {

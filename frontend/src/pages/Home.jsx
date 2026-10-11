@@ -17,8 +17,8 @@ export default function Home() {
     <div className="bg-slate-50 min-h-screen text-slate-900 selection:bg-red-500 selection:text-white">
       <Navbar />
       <Hero />
-      <TrustBadges />
       <Products categories={categories} />
+      <TrustBadges />
       <SizingFinder />
       <Projects projects={projects} />
       <Contact settings={settings} />

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
+import { useProducts } from "@/context/ProductsContext";
 import { sareeConfig } from "@/data/saree-config";
 import {
   Sparkles,
@@ -12,7 +13,9 @@ import {
 } from "lucide-react";
 
 export default function SareeCatalog() {
-  const { categories, settings } = sareeConfig;
+  const { sareeCategories, sareeSettings } = useProducts();
+  const categories = sareeCategories || sareeConfig.categories;
+  const settings = sareeSettings || sareeConfig.settings;
   const { cart, addToCart, setIsCartOpen } = useCart();
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [activeModalProduct, setActiveModalProduct] = useState(null);
@@ -119,7 +122,9 @@ Please confirm stock and arrange same-day delivery / fabric inspection to my Ran
             return (
               <div
                 key={product.id}
-                className="group bg-white rounded-2xl overflow-hidden border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
+                className={`group bg-white rounded-2xl overflow-hidden border border-gray-200/80 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between ${
+                  product.in_stock === false ? "opacity-90" : ""
+                }`}
               >
                 {/* Image Container with 3:4 Aspect Ratio */}
                 <div className="relative aspect-[3/4] overflow-hidden bg-gray-100">
@@ -127,17 +132,23 @@ Please confirm stock and arrange same-day delivery / fabric inspection to my Ran
                     src={product.image}
                     alt={product.name}
                     loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${
+                      product.in_stock === false ? "filter grayscale-[30%] opacity-80" : ""
+                    }`}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
                   {/* Top Badges */}
                   <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-                    {product.badge && (
+                    {product.in_stock === false ? (
+                      <span className="px-2.5 py-0.5 bg-slate-900/95 text-white text-[10px] font-extrabold uppercase tracking-wider rounded-md shadow-sm border border-slate-700">
+                        Sold Out
+                      </span>
+                    ) : product.badge ? (
                       <span className="px-2.5 py-0.5 bg-rose-600 text-white text-[10px] font-extrabold uppercase tracking-wider rounded-md shadow-sm">
                         {product.badge}
                       </span>
-                    )}
+                    ) : null}
                     <span className="px-2 py-0.5 bg-white/95 backdrop-blur-md text-gray-900 text-[10px] font-bold rounded-md shadow-sm">
                       {product.categoryName}
                     </span>
@@ -170,13 +181,13 @@ Please confirm stock and arrange same-day delivery / fabric inspection to my Ran
 
                     {/* Pricing */}
                     <div className="flex items-baseline gap-2 mb-3">
-                      <span className="text-base font-black text-gray-900">
+                      <span className="text-base font-black text-gray-900 tabular-nums">
                         {formatINR(product.price)}
                       </span>
-                      <span className="text-xs text-gray-400 line-through">
+                      <span className="text-xs text-gray-400 line-through tabular-nums">
                         {formatINR(product.mrp)}
                       </span>
-                      <span className="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.2 rounded">
+                      <span className="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded tabular-nums">
                         {discount}% OFF
                       </span>
                     </div>
@@ -188,38 +199,52 @@ Please confirm stock and arrange same-day delivery / fabric inspection to my Ran
                   </div>
 
                   {/* CTAs */}
-                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-gray-100">
-                    <button
-                      type="button"
-                      onClick={() => handleAddToCart(product)}
-                      className={`py-2 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition-all shadow-sm ${
-                        inCart
-                          ? "bg-emerald-600 text-white"
-                          : "bg-slate-900 hover:bg-slate-800 text-white"
-                      }`}
-                    >
-                      {inCart ? (
-                        <>
-                          <Check className="w-3.5 h-3.5" />
-                          <span>In Bag</span>
-                        </>
-                      ) : (
-                        <>
-                          <ShoppingBag className="w-3.5 h-3.5 text-rose-400" />
-                          <span>Add to Bag</span>
-                        </>
-                      )}
-                    </button>
+                  <div className="pt-2 border-t border-gray-100">
+                    {product.in_stock === false ? (
+                      <a
+                        href={`https://wa.me/${settings.whatsapp_number}?text=${encodeURIComponent(`Hello Surat Saree Factory! I see that ${product.name} (${product.fabric}) is marked sold out. Could you let me know if it can be restocked or if a similar design is available in your Ranchi stock?`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full py-2.5 px-3 bg-slate-900 hover:bg-black text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5 text-rose-400" />
+                        <span>Ask Restock / Similar on WhatsApp</span>
+                      </a>
+                    ) : (
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleAddToCart(product)}
+                          className={`py-2 px-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1 transition-all shadow-sm ${
+                            inCart
+                              ? "bg-emerald-600 text-white"
+                              : "bg-slate-900 hover:bg-slate-800 text-white"
+                          }`}
+                        >
+                          {inCart ? (
+                            <>
+                              <Check className="w-3.5 h-3.5" />
+                              <span>In Bag</span>
+                            </>
+                          ) : (
+                            <>
+                              <ShoppingBag className="w-3.5 h-3.5 text-rose-400" />
+                              <span>Add to Bag</span>
+                            </>
+                          )}
+                        </button>
 
-                    <a
-                      href={getSareeWhatsAppUrl(product)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="py-2 px-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1 transition-colors shadow-sm"
-                    >
-                      <MessageSquare className="w-3.5 h-3.5" />
-                      <span>WhatsApp</span>
-                    </a>
+                        <a
+                          href={getSareeWhatsAppUrl(product)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="py-2 px-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1 transition-colors shadow-sm"
+                        >
+                          <MessageSquare className="w-3.5 h-3.5" />
+                          <span>Direct WhatsApp</span>
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

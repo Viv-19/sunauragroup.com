@@ -1,15 +1,27 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Contact from "@/components/Contact";
 import { useCart } from "@/context/CartContext";
 import { useProducts } from "@/context/ProductsContext";
-import { ArrowLeft, Package, MessageSquare, Check, Truck, ShieldCheck, ShoppingBag } from "lucide-react";
+import {
+    ArrowLeft,
+    Package,
+    MessageSquare,
+    Check,
+    Truck,
+    ShieldCheck,
+    ShoppingBag,
+    Sparkles,
+    Wrench
+} from "lucide-react";
 
 export default function CategoryProducts() {
     const { categoryId } = useParams();
     const { categories, settings } = useProducts();
     const { cart, addToCart, setIsCartOpen } = useCart();
+    const [selectedVariants, setSelectedVariants] = useState({});
 
     const category = categories.find((c) => c.id === categoryId);
 
@@ -37,21 +49,28 @@ export default function CategoryProducts() {
         return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(val);
     };
 
-    const getWhatsAppUrl = (product) => {
-        const message = `Hello SunAura! I am interested in ordering/inquiring about:
-*Product:* ${product.name}
+    const getWhatsAppUrl = (product, currentVariant) => {
+        const activeName = currentVariant ? currentVariant.name : product.name;
+        const activePrice = currentVariant ? currentVariant.price : product.price;
+        const activeMrp = currentVariant ? currentVariant.mrp : product.mrp;
+        const activeSpec = currentVariant ? currentVariant.spec : product.spec;
+        const isFreeInstall = product.free_installation;
+
+        const message = `Hello SunAura! I want to order/inquire about:
+*Product:* ${activeName}
 *Brand:* ${product.brand || category.brand}
 *Category:* ${category.name}
-*Price:* ${product.price ? formatINR(product.price) : 'Quote on request'}
-${product.spec ? `*Specification:* ${product.spec}` : ''}
+*Selling Price:* ${activePrice ? formatINR(activePrice) : 'Quote on request'} ${activeMrp ? `(MRP: ${formatINR(activeMrp)})` : ''}
+${activeSpec ? `*Specification:* ${activeSpec}` : ''}
+*Installation Perk:* ${isFreeInstall ? "✅ Free Standard Installation & Connecting Pipes Included" : "Standard Installation on Request"}
 
-Please confirm availability and delivery to my location in Ranchi / Jharkhand.`;
+Please confirm immediate stock availability and delivery in Ranchi / Jharkhand.`;
 
         return `https://wa.me/${settings.whatsapp_number}?text=${encodeURIComponent(message)}`;
     };
 
-    const getItemQuantityInCart = (productId) => {
-        const item = cart.find((i) => i.id === productId);
+    const getItemQuantityInCart = (itemId) => {
+        const item = cart.find((i) => i.id === itemId);
         return item ? item.quantity : 0;
     };
 
@@ -70,13 +89,11 @@ Please confirm availability and delivery to my location in Ranchi / Jharkhand.`;
 
                         <div className="flex flex-wrap items-center gap-3 mb-3">
                             <span className="px-3 py-1 bg-red-600/90 text-white text-xs font-bold rounded-full uppercase tracking-wider">
-                                {category.brand}
+                                {category.brand || "Racold"}
                             </span>
-                            {category.department === "water-heating" && (
-                                <span className="px-3 py-1 bg-white/10 text-gray-300 text-xs font-semibold rounded-full flex items-center gap-1">
-                                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Authorized Distributor
-                                </span>
-                            )}
+                            <span className="px-3 py-1 bg-white/10 text-gray-300 text-xs font-semibold rounded-full flex items-center gap-1">
+                                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Authorized Distributor
+                            </span>
                         </div>
 
                         <h1 className="text-4xl sm:text-5xl font-black mb-4 tracking-tight">{category.name}</h1>
@@ -129,11 +146,18 @@ Please confirm availability and delivery to my location in Ranchi / Jharkhand.`;
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {category.products.map((product) => {
-                                    const discountPercent = product.mrp && product.price
-                                        ? Math.round(((product.mrp - product.price) / product.mrp) * 100)
+                                    const currentVariant = selectedVariants[product.id] || (product.variants && product.variants.length > 0 ? product.variants[0] : null);
+                                    const displayPrice = currentVariant ? currentVariant.price : product.price;
+                                    const displayMrp = currentVariant ? currentVariant.mrp : product.mrp;
+                                    const displaySpec = currentVariant ? currentVariant.spec : product.spec;
+                                    const displayItemId = currentVariant ? currentVariant.id : (product.id || product.name);
+                                    const displayName = currentVariant ? currentVariant.name : product.name;
+
+                                    const discountPercent = displayMrp && displayPrice
+                                        ? Math.round(((displayMrp - displayPrice) / displayMrp) * 100)
                                         : null;
 
-                                    const qtyInCart = getItemQuantityInCart(product.id || product.name);
+                                    const qtyInCart = getItemQuantityInCart(displayItemId);
 
                                     return (
                                         <div
@@ -158,7 +182,7 @@ Please confirm availability and delivery to my location in Ranchi / Jharkhand.`;
                                                     )}
                                                     {product.fast_delivery && (
                                                         <span className="bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md shadow-sm flex items-center gap-1">
-                                                            <Truck className="w-3 h-3" /> Ranchi Fast Delivery
+                                                            <Truck className="w-3 h-3" /> Ranchi Delivery
                                                         </span>
                                                     )}
                                                 </div>
@@ -180,21 +204,62 @@ Please confirm availability and delivery to my location in Ranchi / Jharkhand.`;
                                                         </h3>
                                                     </div>
 
-                                                    {product.spec && (
-                                                        <div className="inline-block px-3 py-1 bg-red-50 text-red-700 text-xs font-bold rounded-lg mb-4">
-                                                            {product.spec}
+                                                    {/* Variant Selector Pills */}
+                                                    {product.variants && product.variants.length > 1 && (
+                                                        <div className="mb-4">
+                                                            <label className="text-[11px] font-extrabold text-gray-500 uppercase tracking-wider block mb-1.5">
+                                                                Select Capacity:
+                                                            </label>
+                                                            <div className="flex flex-wrap gap-1.5">
+                                                                {product.variants.map((v) => {
+                                                                    const isSelected = (currentVariant && currentVariant.id === v.id);
+                                                                    return (
+                                                                        <button
+                                                                            key={v.id}
+                                                                            type="button"
+                                                                            onClick={() => setSelectedVariants((prev) => ({ ...prev, [product.id]: v }))}
+                                                                            className={`px-3 py-1 text-xs font-bold rounded-lg border transition-all ${
+                                                                                isSelected
+                                                                                    ? "bg-red-600 text-white border-red-600 shadow-sm"
+                                                                                    : "bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200"
+                                                                            }`}
+                                                                        >
+                                                                            {v.capacity || v.name}
+                                                                        </button>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {displaySpec && (
+                                                        <div className="inline-block px-3 py-1 bg-red-50 text-red-700 text-xs font-bold rounded-lg mb-3">
+                                                            {displaySpec}
+                                                        </div>
+                                                    )}
+
+                                                    {/* Installation Perk Badge */}
+                                                    {product.free_installation ? (
+                                                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-bold mb-4">
+                                                            <Sparkles className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                                                            <span>Free Installation & Connecting Pipes</span>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 text-amber-800 border border-amber-200 rounded-xl text-xs font-semibold mb-4">
+                                                            <Wrench className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+                                                            <span>Standard Installation Available (Chargeable)</span>
                                                         </div>
                                                     )}
 
                                                     {/* Price Display */}
-                                                    {product.price && (
-                                                        <div className="flex items-baseline gap-2.5 mb-5">
+                                                    {displayPrice && (
+                                                        <div className="flex items-baseline gap-2.5 mb-4">
                                                             <span className="text-2xl font-black text-gray-900">
-                                                                {formatINR(product.price)}
+                                                                {formatINR(displayPrice)}
                                                             </span>
-                                                            {product.mrp && (
+                                                            {displayMrp && (
                                                                 <span className="text-sm text-gray-400 line-through">
-                                                                    {formatINR(product.mrp)}
+                                                                    {formatINR(displayMrp)}
                                                                 </span>
                                                             )}
                                                         </div>
@@ -218,7 +283,14 @@ Please confirm availability and delivery to my location in Ranchi / Jharkhand.`;
                                                             <div className="grid grid-cols-2 gap-2">
                                                                 <button
                                                                     onClick={() => {
-                                                                        addToCart(product);
+                                                                        addToCart({
+                                                                            ...product,
+                                                                            id: displayItemId,
+                                                                            name: displayName,
+                                                                            spec: displaySpec,
+                                                                            price: displayPrice,
+                                                                            mrp: displayMrp,
+                                                                        });
                                                                     }}
                                                                     className="py-3 px-3 bg-slate-900 hover:bg-black text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm"
                                                                 >
@@ -228,7 +300,14 @@ Please confirm availability and delivery to my location in Ranchi / Jharkhand.`;
 
                                                                 <button
                                                                     onClick={() => {
-                                                                        addToCart(product);
+                                                                        addToCart({
+                                                                            ...product,
+                                                                            id: displayItemId,
+                                                                            name: displayName,
+                                                                            spec: displaySpec,
+                                                                            price: displayPrice,
+                                                                            mrp: displayMrp,
+                                                                        });
                                                                         setIsCartOpen(true);
                                                                     }}
                                                                     className="py-3 px-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md shadow-red-600/20"
@@ -238,18 +317,18 @@ Please confirm availability and delivery to my location in Ranchi / Jharkhand.`;
                                                             </div>
 
                                                             <a
-                                                                href={getWhatsAppUrl(product)}
+                                                                href={getWhatsAppUrl(product, currentVariant)}
                                                                 target="_blank"
                                                                 rel="noopener noreferrer"
                                                                 className="w-full py-2.5 px-4 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-xl font-semibold text-xs flex items-center justify-center gap-2 border border-emerald-200 transition-colors"
                                                             >
                                                                 <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-                                                                <span>Quick WhatsApp Inquiry</span>
+                                                                <span>Quick WhatsApp Order</span>
                                                             </a>
                                                         </>
                                                     ) : (
                                                         <a
-                                                            href={getWhatsAppUrl(product)}
+                                                            href={getWhatsAppUrl(product, currentVariant)}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
                                                             className="w-full py-3.5 px-4 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-600 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-red-600/20 transition-all"
